@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , useContext} from "react";
 import { createAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
 import {
    createUserDocumentFromAuth,
@@ -8,7 +8,7 @@ import {
 import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
 import "./sign-in.style.scss";
-
+import { UserContext } from "../../contexts/user.context";
 const defautFormField = {
    email: "",
    password: "",
@@ -16,6 +16,7 @@ const defautFormField = {
 const SignInForm = () => {
    const [formFields, setFormField] = useState(defautFormField);
    const { email, password } = formFields;
+   const { setCurrentUser } = useContext(UserContext);
    console.log(formFields);
 
    const resetFormField = () => {
@@ -26,7 +27,9 @@ const SignInForm = () => {
 
       signInAuthUserWithEmailAndPassword(email, password)
          .then((response) => {
-            console.log(response);
+            const {user} = response;
+            setCurrentUser(user);
+            console.log(user, 'already logged in');
          })
          .catch((error) => {
             console.error("user creation encountered an error", error);
@@ -36,6 +39,8 @@ const SignInForm = () => {
    const signInWithGoogle = async () => {
       const { user } = await signInWithGooglePopup();
       const userDocRef = await createUserDocumentFromAuth(user);
+      setCurrentUser(user);
+      console.log(user,'asdfasdfasdfasdfasdfasdf');
    };
    const handleChange = (event) => {
       const { name, value } = event.target;
