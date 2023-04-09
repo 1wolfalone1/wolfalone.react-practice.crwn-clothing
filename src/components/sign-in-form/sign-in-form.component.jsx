@@ -1,9 +1,10 @@
-import { useState , useContext} from "react";
+import { useState, useContext } from "react";
 import { createAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
 import {
    createUserDocumentFromAuth,
    signInWithGooglePopup,
-   signInAuthUserWithEmailAndPassword
+   signInAuthUserWithEmailAndPassword,
+   getUser,
 } from "../../utils/firebase/firebase.utils";
 import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
@@ -17,7 +18,6 @@ const SignInForm = () => {
    const [formFields, setFormField] = useState(defautFormField);
    const { email, password } = formFields;
    const { setCurrentUser } = useContext(UserContext);
-   console.log(formFields);
 
    const resetFormField = () => {
       setFormField(defautFormField);
@@ -27,9 +27,11 @@ const SignInForm = () => {
 
       signInAuthUserWithEmailAndPassword(email, password)
          .then((response) => {
-            const {user} = response;
-            setCurrentUser(user);
-            console.log(user, 'already logged in');
+            const { user } = response;
+            return Promise.resolve(user);
+         })
+         .then((user) => {
+            const userReal = getUser(user.uid);
          })
          .catch((error) => {
             console.error("user creation encountered an error", error);
@@ -38,9 +40,7 @@ const SignInForm = () => {
    };
    const signInWithGoogle = async () => {
       const { user } = await signInWithGooglePopup();
-      const userDocRef = await createUserDocumentFromAuth(user);
-      setCurrentUser(user);
-      console.log(user,'asdfasdfasdfasdfasdfasdf');
+      createUserDocumentFromAuth(user);
    };
    const handleChange = (event) => {
       const { name, value } = event.target;
@@ -60,6 +60,7 @@ const SignInForm = () => {
                name="email"
                value={email}
             />
+            <p className="dsfa"></p>
             <FormInput
                label="Password"
                type="password"
@@ -70,7 +71,11 @@ const SignInForm = () => {
             />
             <div className="buttons-container">
                <Button type="submit">Sign In</Button>
-               <Button type='button' buttonType="google" onClick={signInWithGoogle}>
+               <Button
+                  type="button"
+                  buttonType="google"
+                  onClick={signInWithGoogle}
+               >
                   Google sign in
                </Button>
             </div>

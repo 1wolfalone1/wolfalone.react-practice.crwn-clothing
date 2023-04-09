@@ -30,7 +30,7 @@ const SignUpForm = () => {
             response.user.displayName = displayName;
             return createUserDocumentFromAuth(response.user);
          })
-         .then(() => {
+         .then((user) => {
             resetFormField();
          })
          .catch((error) => {
