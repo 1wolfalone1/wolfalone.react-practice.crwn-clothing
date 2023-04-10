@@ -4,18 +4,21 @@ import { useContext } from "react";
 import { UserContext } from "../../contexts/user.context";
 import { signOutUser } from "../../utils/firebase/firebase.utils";
 import "./nav.styles.scss";
+import CartIcon from "../../components/cart-icon/cart-icon.component";
+import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component";
+import { CartContext } from "../../contexts/cart.context";
 const Navigation = () => {
    const { currentUser} = useContext(UserContext);
-
+   const {isCartOpen} = useContext(CartContext)
    const signOutHandler = async () => {
       await signOutUser();
    }
+
    console.log(currentUser, "heeeeeeeeeeeeeeeeeeeeee");
 
 return (
       <>
          <div className="navigation">
-            {currentUser && <h1>{`hello ${currentUser.displayName} `}</h1>}
             <Link className="logo-container" to="/">
                <Logo className="logo" />
             </Link>
@@ -34,7 +37,9 @@ return (
                      Sign In
                   </Link>
                )}
+               <CartIcon />
             </div>
+            {isCartOpen && <CartDropdown/>}
          </div>
          <Outlet />
       </>
