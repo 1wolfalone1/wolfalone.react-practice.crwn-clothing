@@ -32,7 +32,6 @@ const Home = ({children}) => {
 
    return (
    <div>
-    {children}
     <Outlet/>
     <Directory categories={categories}/>
    </div>
