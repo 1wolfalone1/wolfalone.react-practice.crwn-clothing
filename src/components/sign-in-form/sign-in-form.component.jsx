@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { createAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
 import {
    createUserDocumentFromAuth,
@@ -18,7 +19,11 @@ const SignInForm = () => {
    const [formFields, setFormField] = useState(defautFormField);
    const { email, password } = formFields;
    const { setCurrentUser } = useContext(UserContext);
+   const navigate = useNavigate();
 
+   const goToHomePage = () => {
+      navigate("/");
+   }
    const resetFormField = () => {
       setFormField(defautFormField);
    };
@@ -31,7 +36,7 @@ const SignInForm = () => {
             return Promise.resolve(user);
          })
          .then((user) => {
-            const userReal = getUser(user.uid);
+            goToHomePage();
          })
          .catch((error) => {
             console.error("user creation encountered an error", error);
@@ -39,7 +44,13 @@ const SignInForm = () => {
          });
    };
    const signInWithGoogle = async () => {
-      await signInWithGooglePopup();
+      try {
+         await signInWithGooglePopup();
+         goToHomePage();
+         console.log(">>>>>>>>>>>>>>>>")
+      } catch (error) {
+         alert(error);
+      }
    };
    const handleChange = (event) => {
       const { name, value } = event.target;

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { createAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
 import { createUserDocumentFromAuth } from "../../utils/firebase/firebase.utils";
 import FormInput from "../form-input/form-input.component";
@@ -13,8 +14,11 @@ const defautFormField = {
 const SignUpForm = () => {
    const [formFields, setFormField] = useState(defautFormField);
    const { displayName, email, password, confirmPassword } = formFields;
-   console.log(formFields);
+   const navigate = useNavigate();
 
+   const goToHomePage = () => {
+      navigate("/");
+   }
    const resetFormField = () => {
       setFormField(defautFormField);
    };
@@ -32,6 +36,7 @@ const SignUpForm = () => {
          })
          .then((user) => {
             resetFormField();
+            goToHomePage();
          })
          .catch((error) => {
             console.error("user creation encountered an error", error);
