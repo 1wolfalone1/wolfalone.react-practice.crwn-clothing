@@ -13,7 +13,7 @@ const Navigation = () => {
    const signOutHandler = async () => {
       await signOutUser();
    }
-
+   console.log(CartDropdown.height, "isCartOpen");
    console.log(currentUser, "heeeeeeeeeeeeeeeeeeeeee");
 
 return (

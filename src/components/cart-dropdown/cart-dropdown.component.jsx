@@ -7,6 +7,7 @@ import { useContext } from 'react'
 const CartDropdown = () => {
     const {cartItems} = useContext(CartContext);
     const navigate = useNavigate();
+    
     const goToCheckOutHandle = () => {
         navigate('/checkout')
     }
@@ -24,3 +25,5 @@ const CartDropdown = () => {
 
 
 export default CartDropdown
+
+
