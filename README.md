@@ -11,3 +11,5 @@ This project is a practice project for learning and mastering ReactJS. It is a s
 
 1. Run `npm start` to start the development server.
 2. Open your web browser and navigate to `http://localhost:3000`.
+@@ Deployment in Netlify 
+Link demo: https://loquacious-torrone-7d74fa.netlify.app/
